@@ -1,11 +1,11 @@
 {
-  "name": "tictactoe",
+  "name": "tictactoechat",
   "version": "1.0.0",
-  "description": "Tic-Tac-Goo.",
+  "description": "Online Multiplayer Tic-Tac-Toe game with Live Chat and Highscores.",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "server" : "nodemon index.js"
+    "start" : "nodemon index.js"
   },
   "keywords": [
     "TicTacToe",
@@ -13,12 +13,12 @@
     "Chat",
     "TicTacToeChat"
   ],
-  "author": "",
+  "author": "Pranav Patil",
   "license": "ISC",
   "dependencies": {
     "dotenv": "^16.0.3",
     "express": "^4.18.2",
-    "nodemon": "^3.1.0",
+    "nodemon": "^2.0.20",
     "socket.io": "^4.5.4"
   }
 }
