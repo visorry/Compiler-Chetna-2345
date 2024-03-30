@@ -14,7 +14,7 @@
     "Chat",
     "TicTacToeChat"
   ],
-  "author": "Pranav Patil",
+  "author": "Abhayansih gaikwad",
   "license": "ISC",
   "dependencies": {
     "cors": "^2.8.5",
