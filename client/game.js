@@ -1,4 +1,4 @@
-const socket = io();
+const socket = io('http://localhost:5000');
 
 let message = document.getElementById("message");
 let send_btn = document.getElementById("send");
