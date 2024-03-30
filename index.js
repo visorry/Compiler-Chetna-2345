@@ -1,87 +1,95 @@
-const path = require("path");
+const http = require("http");
 const express = require("express");
+const socketio = require("socket.io");
+const cors = require("cors");
+
 const app = express();
-const port = process.env.PORT || 5000;
-
-app.use(express.static(path.join(__dirname, "client")));
-
-const server = app.listen(port, () => {
-  console.log("Server is running on Port " + port + " ...");
+const server = http.createServer(app);
+const io = socketio(server, {
+  cors: {
+    origin: "*",
+    methods: ["GET", "POST"]
+  }
 });
 
-//Bidirectional socket  connection
-const socketio = require("socket.io");
+const port = process.env.PORT || 5000;
 
-//Listen to the server through the constant created called server
-const io = socketio(server);
+// Use CORS middleware to allow requests from any origin
+app.use(cors());
 
-//creating variables for the old game
-var players = {},
-  unmatched;
-
-// on (listen) and emit (send) events
-//listen for "connection" event with its "on" method
+// Handle socket connections
 io.on("connection", (socket) => {
-  console.log("New Player Id :", socket.id);
+  console.log("New Player Id:", socket.id);
   joinGame(socket);
 
-  socket.on("username", function (data) {
+  socket.on("username", (data) => {
     socket.username = data;
-    console.log("New Player Username :", socket.username);
+    console.log("New Player Username:", socket.username);
   });
 
   socket.on("chat:message", (data) => {
-    io.sockets.emit("chat:message", data);
+    io.emit("chat:message", data); // Broadcast the message to all connected clients
     console.log(data);
   });
 
   socket.on("chat:typing", (data) => {
-    socket.broadcast.emit("chat:typing", data);
+    socket.broadcast.emit("chat:typing", data); // Broadcast the typing event to all clients except the sender
   });
 
-  if (getOpponent(socket)) {
-    socket.emit("game.begin", {
-      symbol: players[socket.id].symbol,
-    });
-    getOpponent(socket).emit("game.begin", {
-      symbol: players[getOpponent(socket).id].symbol,
-    });
+  const opponent = getOpponent(socket);
+  if (opponent) {
+    // Begin the game for both players
+    socket.emit("game.begin", { symbol: players[socket.id].symbol });
+    opponent.emit("game.begin", { symbol: players[opponent.id].symbol });
   }
 
-  socket.on("make.move", function (data) {
-    if (!getOpponent(socket)) {
-      return;
+  socket.on("make.move", (data) => {
+    const opponent = getOpponent(socket);
+    if (opponent) {
+      // Send the move to both players
+      socket.emit("move.made", data);
+      opponent.emit("move.made", data);
     }
-    socket.emit("move.made", data);
-    getOpponent(socket).emit("move.made", data);
   });
 
-  socket.on("disconnect", function () {
-    if (getOpponent(socket)) {
-      getOpponent(socket).emit("opponent.left");
+  socket.on("disconnect", () => {
+    const opponent = getOpponent(socket);
+    if (opponent) {
+      opponent.emit("opponent.left");
     }
   });
 });
 
+// Initialize player data
+const players = {};
+let unmatched;
+
 function joinGame(socket) {
   players[socket.id] = {
     opponent: unmatched,
-
-    symbol: "X",
+    symbol: "X", // Default symbol for the player
     socket: socket,
   };
   if (unmatched) {
+    // If there's an unmatched player, assign symbols and set opponents
     players[socket.id].symbol = "O";
     players[unmatched].opponent = socket.id;
     unmatched = null;
   } else {
+    // If no unmatched player, set the current player as unmatched
     unmatched = socket.id;
   }
 }
 
 function getOpponent(socket) {
+  // Get the opponent of a given player
   if (!players[socket.id].opponent) {
     return;
   }
   return players[players[socket.id].opponent].socket;
 }
+
+// Start the server
+server.listen(port, () => {
+  console.log("Server is running on Port " + port + " ...");
+});
