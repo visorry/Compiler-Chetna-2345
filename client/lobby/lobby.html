@@ -101,7 +101,7 @@ h1 {
             sendRequestButton.dataset.playerName = playerName; // Set player name as a data attribute
         sendRequestButton.addEventListener('click', (event) => {
             const targetPlayerName = event.target.dataset.playerName; // Get player name from data attribute
-            // Send request logic here
+            socket.emit('sendRequest', { sender: localPlayerName, receiver: targetPlayerName });
             console.log(`Sending request to ${targetPlayerName}`);
             sendNotification(targetPlayerName);
         });
