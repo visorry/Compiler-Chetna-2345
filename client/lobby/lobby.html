@@ -127,8 +127,13 @@ h1 {
       // Function to add a player to the list
       function addPlayer(playerName) {
             const playerList = document.getElementById('playerList');
+
+            if (playerList.querySelector(`li[data-player-name="${playerName}"]`)) {
+                    return; // Player already exists, do nothing
+               }
             const playerItem = document.createElement('li');
             playerItem.classList.add('player');
+            playerItem.dataset.playerName = playerName; 
             playerItem.textContent = playerName;
 
     if (playerName !== localPlayerName) {
@@ -143,7 +148,6 @@ h1 {
         });
         playerItem.appendChild(sendRequestButton);
     }
-
     playerList.appendChild(playerItem);
 }
 
