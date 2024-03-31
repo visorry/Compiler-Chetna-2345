@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tic-Tac-Toe-Chat</title>
+    <link rel="stylesheet" href="main.css">
+</head>
+
+<body>
+    <div class="flex">
+        <div class="width50">
+            <div class="board">
+                <button class="cell" id="a0"></button>
+                <button class="cell" id="a1"></button>
+                <button class="cell" id="a2"></button>
+                <button class="cell" id="b0"></button>
+                <button class="cell" id="b1"></button>
+                <button class="cell" id="b2"></button>
+                <button class="cell" id="c0"></button>
+                <button class="cell" id="c1"></button>
+                <button class="cell" id="c2"></button>
+            </div>
+            <h2 class="mob" id="messages">Waiting for opponent to join...</h2>
+            <div class="mob">
+                <div>
+                    <button class="mybtn" onclick="display_score()" type="button">
+                        Check Highscore
+                    </button>
+                </div>
+                <br>
+                <div>
+                    <button class="mybtn" onClick="window.location.reload();">New Game</button>
+                </div>
+
+            </div>
+        </div>
+        <div id="chatbox" class="width50">
+            <div id="chat-container">
+                <div id="typo">
+                </div>
+
+                <div id="chat-window">
+                    <div id="output"></div>
+                    <div id="actions"></div>
+                </div>
+            </div>
+            <form class="inputsend" id="form">
+
+                <input type="text" id="message" autocomplete="off" placeholder="Type a Message ...">
+                <button type="submit" id="send">Send</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Use of jquery code -->
+    <script src="https://code.jquery.com/jquery-1.11.1.js"></script>
+
+    <!--Requiring the socket.io file for client connection -->
+    <script src="https://cdn.socket.io/4.4.1/socket.io.min.js"></script>
+
+    <script src="game.js" charset="utf-8"></script>
+
+</body>
+
+</html>
