@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Lobby Room</title>
+<style>
+    body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+}
+.container {
+
+    max-width: 800px;
+    margin: 20px auto;
+    padding: 20px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    background-color: #f9f9f9;
+}
+
+#localPlayerName{
+    height: 30px;
+    width: 130px;
+   font-size: 19px;
+    border-radius: 4px;
+    border: 1px solid black;
+   text-align: center;
+
+}
+#buttonroom{
+    height: 30px;
+    width: 130px;
+    color: white;
+   font-size: 19px;
+    border-radius: 4px;
+    border: 1px solid black;
+   text-align: center;
+   background-color: rgb(43, 41, 41);
+}
+
+#buttonroom:hover{
+    background-color: white;
+    color: black;
+}
+.container div label{
+    height: 30px;
+    width: 130px;
+    padding: 6px;
+    color: black;
+   font-size: 19px;
+    border-radius: 4px;
+    border: 1px solid black;
+   text-align: center;
+}
+h1 {
+    text-align: center;
+}
+#playerList {
+    list-style-type: none;
+    padding: 0;
+}
+.player {
+    padding: 10px;
+    margin-bottom: 5px;
+    background-color: #f0f0f0;
+    border-radius: 5px;
+}
+#notification {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: #f8d7da;
+    padding: 20px;
+    border-radius: 5px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    z-index: 9999;
+    display: none; /* Initially hidden */
+    flex-direction: column;
+    align-items: center;
+}
+
+@keyframes popUp {
+    0% {
+        transform: translate(-50%, -70%);
+        opacity: 0;
+    }
+    100% {
+        transform: translate(-50%, -50%);
+        opacity: 1;
+    }
+}
+
+.hidden {
+    display: none;
+}
+
+</style>
+</head>
+<body>
+    <div class="container">
+        <h1>Lobby Room</h1>
+        <div>
+            <div>
+                <label for="localPlayerName">Enter your name:</label>
+                <input type="text" id="localPlayerName" placeholder="Your Name">
+                <button id="buttonroom" onclick="joinRoom()">Join Room</button>
+            </div>
+        </div>
+        <p>Number of players: <span id="playerCount">0</span></p>
+        <p>Empty seats remaining: <span id="emptySeats">10</span></p>
+        <ul id="playerList"></ul>
+    </div>
+    <div id="notification" class="hidden">
+        <p><span id="senderName"></span> wants to play with you!</p>
+        <div>
+            <button onclick="acceptRequest()">Accept</button>
+            <button onclick="rejectRequest()">Reject</button>
+        </div>
+    </div>    
+    <script src="https://cdn.socket.io/4.7.4/socket.io.min.js" integrity="sha384-Gr6Lu2Ajx28mzwyVR8CFkULdCU7kMlZ9UthllibdOSo6qAiN+yXNHqtgdTvFXMT4" crossorigin="anonymous"></script>
+    <script>
+        const socket = io("https://compiler-chetna-2345-production.up.railway.app/", { transports: ["websocket"] });
+
+      // Function to add a player to the list
+      function addPlayer(playerName) {
+            const playerList = document.getElementById('playerList');
+
+            if (playerList.querySelector(`li[data-player-name="${playerName}"]`)) {
+                    return; // Player already exists, do nothing
+               }
+            const playerItem = document.createElement('li');
+            playerItem.classList.add('player');
+            playerItem.dataset.playerName = playerName; 
+            playerItem.textContent = playerName;
+
+    if (playerName !== localPlayerName) {
+            const sendRequestButton = document.createElement('button');
+            sendRequestButton.textContent = 'Send Request';
+            sendRequestButton.dataset.playerName = playerName; // Set player name as a data attribute
+        sendRequestButton.addEventListener('click', (event) => {
+            const targetPlayerName = event.target.dataset.playerName; // Get player name from data attribute
+            socket.emit('sendRequest', { sender: localPlayerName, receiver: targetPlayerName });
+            console.log(`Sending request to ${targetPlayerName}`);
+            sendNotification(targetPlayerName);
+        });
+        playerItem.appendChild(sendRequestButton);
+    }
+    playerList.appendChild(playerItem);
+}
+
+            let localPlayerName = "";
+
+            function showNotification(senderName) {
+
+                document.getElementById('senderName').textContent = senderName;
+                document.getElementById('notification').classList.remove('hidden');
+                document.getElementById('notification').style.display = 'flex';
+            }
+
+            // Function to accept request
+            function acceptRequest() {
+                console.log(`Accept request from ${document.getElementById('senderName').textContent}`);
+                window.location.href = 'game.html';
+                document.getElementById('notification').style.display = 'none'; // Redirect to game.html
+            }
+
+            function rejectRequest() {
+
+                console.log(`Reject request from ${document.getElementById('senderName').textContent}`);
+                document.getElementById('notification').style.display = 'none'; 
+            }
+
+        function removePlayer(playerName) {
+            const playerList = document.getElementById('playerList');
+            const players = playerList.getElementsByTagName('li');
+            for (let i = 0; i < players.length; i++) {
+                if (players[i].textContent === playerName) {
+                    playerList.removeChild(players[i]);
+                    break;
+                }
+            }
+        }
+
+        // Function to update player count and empty seats
+        function updateCounts(count, empty) {
+            document.getElementById('playerCount').textContent = count;
+            document.getElementById('emptySeats').textContent = empty;
+        }
+
+        // Join the room with the provided name
+        function joinRoom() {
+            localPlayerName = document.getElementById('localPlayerName').value.trim();
+          if (localPlayerName === '') {
+            alert('Please enter a valid name');
+            return;
+            }
+          document.getElementById('localPlayerName').setAttribute('readonly', true); 
+            socket.emit('new player', localPlayerName);
+        }
+
+        // Socket.IO events
+        socket.on('current players', players => {
+            document.getElementById('playerList').innerHTML = '';
+            players.forEach(player => {
+                addPlayer(player);
+            });
+            updateCounts(players.length, 10 - players.length);
+        });
+
+        function sendNotification(playerName) {
+                if (Notification.permission === 'granted') {
+                    new Notification(`Incoming request from ${playerName}`);
+                } else if (Notification.permission !== 'denied') {
+                    Notification.requestPermission().then(permission => {
+                        if (permission === 'granted') {
+                            new Notification(`Incoming request from ${playerName}`);
+                        }
+                    });
+                }
+            }
+
+        if (Notification.permission !== 'granted' && Notification.permission !== 'denied') {
+            Notification.requestPermission();
+        }
+
+        socket.on('player joined', playerName => {
+            addPlayer(playerName);
+            const playerCount = document.getElementById('playerList').getElementsByTagName('li').length;
+            updateCounts(playerCount, 10 - playerCount);
+        });
+
+        socket.on('player left', playerName => {
+            removePlayer(playerName);
+            const playerCount = document.getElementById('playerList').getElementsByTagName('li').length;
+            updateCounts(playerCount, 10 - playerCount);
+        });
+
+        // Initial request to get current player list
+        socket.emit('get players');
+    </script>
+</body>
+</html>
+
