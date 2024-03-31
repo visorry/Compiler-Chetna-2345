@@ -80,7 +80,6 @@ io.on('connection', socket => {
     //     io.emit('player joined', playerName); // old 
     // });
 
-
     socket.on('sendRequest', ({ sender, receiver }) => {
       const receiverPlayer = Lobbyplayers.find(player => player.name === receiver);
       if (receiverPlayer) {

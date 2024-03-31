@@ -67,13 +67,43 @@ h1 {
     background-color: #f0f0f0;
     border-radius: 5px;
 }
+#notification {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: #f8d7da;
+    padding: 20px;
+    border-radius: 5px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    z-index: 9999;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    animation: popUp 0.3s ease forwards;
+}
+
+@keyframes popUp {
+    0% {
+        transform: translate(-50%, -70%);
+        opacity: 0;
+    }
+    100% {
+        transform: translate(-50%, -50%);
+        opacity: 1;
+    }
+}
+
+.hidden {
+    display: none;
+}
+
 </style>
 </head>
 <body>
     <div class="container">
         <h1>Lobby Room</h1>
         <div>
-
             <div>
                 <label for="localPlayerName">Enter your name:</label>
                 <input type="text" id="localPlayerName" placeholder="Your Name">
@@ -84,9 +114,16 @@ h1 {
         <p>Empty seats remaining: <span id="emptySeats">10</span></p>
         <ul id="playerList"></ul>
     </div>
+    <div id="notification" class="hidden">
+        <p><span id="senderName"></span> wants to play with you!</p>
+        <div>
+            <button onclick="acceptRequest()">Accept</button>
+            <button onclick="rejectRequest()">Reject</button>
+        </div>
+    </div>
     <script src="https://cdn.socket.io/4.7.4/socket.io.min.js" integrity="sha384-Gr6Lu2Ajx28mzwyVR8CFkULdCU7kMlZ9UthllibdOSo6qAiN+yXNHqtgdTvFXMT4" crossorigin="anonymous"></script>
     <script>
-        const socket = io("https://compiler-chetna-2345-production.up.railway.app", { transports: ["websocket"] });
+        const socket = io("http://localhost:5000", { transports: ["websocket"] });
 
       // Function to add a player to the list
       function addPlayer(playerName) {
@@ -111,8 +148,26 @@ h1 {
     playerList.appendChild(playerItem);
 }
 
+            let localPlayerName = "";
 
-        // Function to remove a player from the list
+            function showNotification(senderName) {
+
+                document.getElementById('senderName').textContent = senderName;
+                document.getElementById('notification').classList.remove('hidden');
+            }
+
+            // Function to accept request
+            function acceptRequest() {
+                console.log(`Accept request from ${document.getElementById('senderName').textContent}`);
+                window.location.href = 'game.html'; // Redirect to game.html
+            }
+
+            function rejectRequest() {
+
+                console.log(`Reject request from ${document.getElementById('senderName').textContent}`);
+                document.getElementById('notification').classList.add('hidden');
+            }
+
         function removePlayer(playerName) {
             const playerList = document.getElementById('playerList');
             const players = playerList.getElementsByTagName('li');
@@ -138,7 +193,6 @@ h1 {
             return;
             }
           document.getElementById('localPlayerName').setAttribute('readonly', true); 
- 
             socket.emit('new player', localPlayerName);
         }
 
@@ -163,7 +217,6 @@ h1 {
                 }
             }
 
-// Request permission for notifications
         if (Notification.permission !== 'granted' && Notification.permission !== 'denied') {
             Notification.requestPermission();
         }
