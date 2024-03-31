@@ -65,7 +65,6 @@ let Lobbyplayers = [];
 io.on('connection', socket => {
     console.log('A user connected');
 
-    socket.emit('current players', Lobbyplayers); // old
     socket.emit('current players', Lobbyplayers.map(player => player.name)); // new 
 
     socket.on('new player', playerName => {
@@ -73,12 +72,6 @@ io.on('connection', socket => {
       console.log(Lobbyplayers);
       io.emit('player joined', playerName); // new 
   });
-
-    // socket.on('new player', playerName => {
-    //    Lobbyplayers.push(playerName);
-    //     console.log(Lobbyplayers);
-    //     io.emit('player joined', playerName); // old 
-    // });
 
     socket.on('sendRequest', ({ sender, receiver }) => {
       const receiverPlayer = Lobbyplayers.find(player => player.name === receiver);
@@ -96,21 +89,7 @@ io.on('connection', socket => {
         io.emit('player left', playerName);
     }
 });  // new 
-
-//     socket.on('disconnect', () => {
-//         console.log('A user disconnected');
-//         const index = Lobbyplayers.indexOf(socket.playerName);
-//         if (index !== -1) {
-//             const playerName = Lobbyplayers.splice(index, 1)[0];
-//             io.emit('player left', playerName);
-//         }
-//     }); // old
  });
-
-// Serve the lobby.html file
-// app.get('/', (req, res) => {
-//     res.sendFile(path.join(__dirname, 'lobby.html'));
-// });
 
 
 // Initialize player data

@@ -96,7 +96,6 @@ h1 {
 .hidden {
     display: none;
 }
-
 </style>
 </head>
 <body>
@@ -138,18 +137,24 @@ h1 {
 
     if (playerName !== localPlayerName) {
             const sendRequestButton = document.createElement('button');
+            sendRequestButton.style.marginRight = "100px";
+            sendRequestButton.style.fontFamily = "arial";
+            sendRequestButton.style.padding = "14px";
+            sendRequestButton.style.borderRadius = '3px';
             sendRequestButton.textContent = 'Send Request';
-            sendRequestButton.dataset.playerName = playerName; // Set player name as a data attribute
-        sendRequestButton.addEventListener('click', (event) => {
-            const targetPlayerName = event.target.dataset.playerName; // Get player name from data attribute
+            sendRequestButton.dataset.playerName = playerName; // bute
+     sendRequestButton.addEventListener('click', (event) => {
+        if(localPlayerName === ''){
+            alert('Please enter a valid name before sending request');
+        }
+            const targetPlayerName = event.target.dataset.playerName; 
             socket.emit('sendRequest', { sender: localPlayerName, receiver: targetPlayerName });
             console.log(`Sending request to ${targetPlayerName}`);
-            sendNotification(targetPlayerName);
         });
         playerItem.appendChild(sendRequestButton);
-    }
-    playerList.appendChild(playerItem);
-}
+       }
+        playerList.appendChild(playerItem);
+   }
 
             let localPlayerName = "";
 
@@ -194,8 +199,8 @@ h1 {
         function joinRoom() {
             localPlayerName = document.getElementById('localPlayerName').value.trim();
           if (localPlayerName === '') {
-            alert('Please enter a valid name');
-            return;
+                  alert('Please enter a valid name');
+                  return;
             }
           document.getElementById('localPlayerName').setAttribute('readonly', true); 
             socket.emit('new player', localPlayerName);
@@ -209,22 +214,6 @@ h1 {
             });
             updateCounts(players.length, 10 - players.length);
         });
-
-        function sendNotification(playerName) {
-                if (Notification.permission === 'granted') {
-                    new Notification(`Incoming request from ${playerName}`);
-                } else if (Notification.permission !== 'denied') {
-                    Notification.requestPermission().then(permission => {
-                        if (permission === 'granted') {
-                            new Notification(`Incoming request from ${playerName}`);
-                        }
-                    });
-                }
-            }
-
-        if (Notification.permission !== 'granted' && Notification.permission !== 'denied') {
-            Notification.requestPermission();
-        }
 
         socket.on('player joined', playerName => {
             addPlayer(playerName);
