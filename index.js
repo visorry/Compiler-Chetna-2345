@@ -60,6 +60,35 @@ io.on("connection", (socket) => {
   });
 });
 
+let Lobbyplayers = [];
+
+io.on('connection', socket => {
+    console.log('A user connected');
+
+    socket.emit('current players', Lobbyplayers);
+
+    socket.on('new player', playerName => {
+       Lobbyplayers.push(playerName);
+        console.log(Lobbyplayers);
+        io.emit('player joined', playerName);
+    });
+
+    socket.on('disconnect', () => {
+        console.log('A user disconnected');
+        const index = Lobbyplayers.indexOf(socket.playerName);
+        if (index !== -1) {
+            const playerName = Lobbyplayers.splice(index, 1)[0];
+            io.emit('player left', playerName);
+        }
+    });
+});
+
+// Serve the lobby.html file
+// app.get('/', (req, res) => {
+//     res.sendFile(path.join(__dirname, 'lobby.html'));
+// });
+
+
 // Initialize player data
 const players = {};
 let unmatched;
