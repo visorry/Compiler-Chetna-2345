@@ -2,6 +2,8 @@ const http = require("http");
 const express = require("express");
 const socketio = require("socket.io");
 const cors = require("cors");
+const authRoutes = require('./loginRoute');
+const mongoose = require('mongoose');
 
 const app = express();
 const server = http.createServer(app);
@@ -15,7 +17,15 @@ const io = socketio(server, {
 const port = process.env.PORT || 5000;
 
 // Use CORS middleware to allow requests from any origin
-app.use(cors());
+app.use(cors(), express.json());
+mongoose.connect('mongodb+srv://vis:vishnu@cluster0.wcrafar.mongodb.net/tictacgoo?retryWrites=true&w=majority').then(() => {
+    console.log('MongoDB connected');
+}).catch((err) => {
+    console.error('MongoDB connection error:', err);
+});
+
+// Mount the auth routes
+app.use('/auth', authRoutes);
 
 // Handle socket connections
 io.on("connection", (socket) => {
