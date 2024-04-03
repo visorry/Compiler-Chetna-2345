@@ -104,10 +104,12 @@ document.getElementById('login-form').addEventListener('submit', async function(
             document.getElementById('login-success').innerText = 'Login successful';
             document.getElementById('login-success').style.color = 'green';
             localStorage.setItem('token', data.token);
-
+            const trimmedEmail = email.split('@')[0];
+            localStorage.setItem("username", trimmedEmail);
             // Redirect to lobby.html after 1 second
             setTimeout(function() {
-                window.location.href = '../lobby/lobby.html';
+
+                window.location.href = '../room/room.html';
             }, 1000);
         } else {
             const data = await response.json();

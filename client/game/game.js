@@ -1,4 +1,4 @@
-const socket = io('https://compiler-chetna-2345-production.up.railway.app/');
+const socket = io('http://localhost:5000/');
 
 let message = document.getElementById("message");
 let send_btn = document.getElementById("send");
@@ -21,10 +21,11 @@ function getParsedTime() {
   return hour + ":" + min;
 }
 
-let username = prompt("Please enter your username", "");
-if (!username) {
-  username = "Anonymous";
-}
+let username = localStorage.getItem("username");
+        if (!username) {
+            // If username is not found in localStorage, redirect to lobby page
+            window.location.href = "lobby.html";
+        }
 
 //Let the socket at the server "know" the value of the username.
 socket.emit("username", username);
