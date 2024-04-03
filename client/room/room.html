@@ -2,23 +2,117 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Tic-Tac-Toe Lobby</title>
-    <link rel="stylesheet" href="lobby.css">
+    <style>
+        /* Custom CSS */
+        :root {
+            --default-font: 'Poppins', sans-serif;
+            --button-1-shadow: rgba(0, 0, 0, 0.1);
+            --light-yellow-hover: #f7ce4a;
+        }
+
+        body {
+            font-family: var(--default-font);
+            background-color: #254E58; /* Dark teal background */
+            margin: 0;
+            padding: 0;
+        }
+
+        .container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        .card-container {
+            width: 400px;
+            padding: 20px;
+        }
+
+        .lobby-card {
+            background-color: #1a2e35; /* Set card background color */
+            color: #ffffff; /* Set text color to white */
+            border-radius: 15px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            margin-bottom: 20px;
+        }
+
+        .lobby-card-header {
+            background-color: #1cbbb4; /* Set card header background color */
+            color: #ffffff; /* Set header text color to white */
+            border-top-left-radius: 15px;
+            border-top-right-radius: 15px;
+            padding: 10px;
+        }
+
+        .lobby-card-body {
+            padding: 20px;
+        }
+
+        .btn-create-lobby {
+            background-color: #1cbbb4; /* Set button color to dark teal */
+            border: none;
+            border-radius: 5px;
+            color: #ffffff; /* Set button text color to white */
+            padding: 10px;
+            width: 100%;
+            cursor: pointer;
+        }
+
+        .button {
+            border-radius: 10px;
+            padding: 5px;
+            letter-spacing: 0.0781rem;
+            font-size: 1rem;
+            text-align: center;
+            font-family: var(--default-font);
+            color: black;
+            font-weight: 700;
+            width: 100%;
+            height: 56px;
+            background-color: #f2b137;
+            box-shadow: inset 0 -0.5rem 0 0 var(--button-1-shadow);
+            border: none;
+            cursor: pointer;
+        }
+
+        .button:hover {
+            background-color: var(--light-yellow-hover);
+        }
+    </style>
 </head>
 <body>
-    <h1>Tic-Tac-Toe-Chat Lobby</h1>
-    
-    <div id="lobby">
-        <button onclick="createLobby()">Create Lobby</button>
+    <div class="container">
+        <div class="card-container">
+            <div class="lobby-card">
+                <div class="lobby-card-header">
+                    <h1 class="text-center">Tic-Tac-Toe-Chat Lobby</h1>
+                </div>
+                <div class="lobby-card-body">
+                    <div id="lobby">
+                        <button class="btn-create-lobby" onclick="createLobby()">Create Lobby</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="card-container">
+            <div class="lobby-card">
+                <div class="lobby-card-header">
+                    <h2 class="text-center">Available Lobbies</h2>
+                </div>
+                <div class="lobby-card-body">
+                    <div id="lobbyList">
+                        <div id="lobbyListItems">
+                            <!-- Join buttons will be added dynamically here -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
-
-    <div id="lobbyList">
-        <h2>Available Lobbies</h2>
-        <div id="lobbyListItems"></div>
-    </div>
-
+    <!-- Your custom JS -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.4.1/socket.io.js"></script>
     <script src="lobby.js" charset="utf-8"></script>
 </body>

@@ -3,10 +3,14 @@ const socket = io('https://compiler-chetna-2345-production.up.railway.app/');
 // Client side (lobby.js)
 function createLobby() {
     const lobbyName = prompt("Enter lobby name:");
-    socket.emit("createLobby", { lobbyName });
-    // Request lobby list update immediately after creating a lobby
-    socket.emit("listLobbies");
-    window.location.href = `../game/game.html`;
+    if (lobbyName.trim() !== "") { // Check if lobby name is not empty
+        socket.emit("createLobby", { lobbyName });
+        // Request lobby list update immediately after creating a lobby
+        socket.emit("listLobbies");
+        window.location.href = `../game/game.html`;
+    } else {
+        alert("Please enter a valid lobby name.");
+    }
 }
 
 socket.on("lobbyListUpdate", (lobbyList) => {
@@ -14,9 +18,13 @@ socket.on("lobbyListUpdate", (lobbyList) => {
     lobbyListItems.innerHTML = ""; // Clear existing lobby list
     lobbyList.forEach((lobby) => {
         const lobbyItem = document.createElement("div");
-        lobbyItem.textContent = lobby;
+        lobbyItem.classList.add("lobby-card");
+        const lobbyName = document.createElement("h5");
+        lobbyName.textContent = lobby;
+        lobbyItem.appendChild(lobbyName);
         const joinButton = document.createElement("button");
         joinButton.textContent = "Join";
+        joinButton.classList.add("button");
         joinButton.addEventListener("click", () => {
             joinLobby(lobby);
         });
