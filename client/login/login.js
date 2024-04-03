@@ -49,3 +49,74 @@ document.querySelectorAll('.tab a').forEach(function(element) {
         });
     });
 });
+
+// Register Form Submission
+document.getElementById('register-form').addEventListener('submit', async function(event) {
+    event.preventDefault();
+    
+    const email = document.getElementById('email-register').value;
+    const password = document.getElementById('password-register').value;
+
+    try {
+        const response = await fetch('http://localhost:5000/auth/signup', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ email, password })
+        });
+
+        if (response.ok) {
+            console.log('User registered successfully');
+            document.getElementById('register-success').innerText = 'User registered successfully';
+            document.getElementById('register-success').style.color = 'green';
+        } else {
+            const data = await response.json();
+            console.error(data.error || 'Registration failed');
+            document.getElementById('register-success').innerText = data.error || 'Registration failed';
+            document.getElementById('register-success').style.color = 'red';
+        }
+    } catch (error) {
+        console.error('Error:', error);
+        alert('An error occurred. Please try again.');
+    }
+});
+
+// Login Form Submission
+document.getElementById('login-form').addEventListener('submit', async function(event) {
+    event.preventDefault();
+    
+    const email = document.getElementById('email-login').value;
+    const password = document.getElementById('password-login').value;
+
+    try {
+        const response = await fetch('http://localhost:5000/auth/login', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ email, password })
+        });
+
+        if (response.ok) {
+            const data = await response.json();
+            console.log('Login successful');
+            document.getElementById('login-success').innerText = 'Login successful';
+            document.getElementById('login-success').style.color = 'green';
+            localStorage.setItem('token', data.token);
+
+            // Redirect to lobby.html after 1 second
+            setTimeout(function() {
+                window.location.href = '../lobby/lobby.html';
+            }, 1000);
+        } else {
+            const data = await response.json();
+            console.error(data.error || 'Login failed');
+            document.getElementById('login-error').innerText = data.error || 'Login failed';
+            document.getElementById('login-error').style.color = 'red';
+        }
+    } catch (error) {
+        console.error('Error:', error);
+        alert('An error occurred. Please try again.');
+    }
+});
