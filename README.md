@@ -85,10 +85,7 @@ Password:- Pass@1234
 - bcrypt     : Library for hashing passwords.
 - jwt        : Library for generating JSON Web Tokens.
 - socketsio  : low latency communication between client and server and client to client
-## Upcoming Features 
-- Admin page
-- Leaderboard positionss
-- prizes and rewards
+
 
 ## Team Members 
 ### Abhaysinh Gaikwad(Team Lead )
