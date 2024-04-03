@@ -3,242 +3,289 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Lobby Room</title>
+<title>Game Lobby</title>
 <style>
+    :root {
+        /* Colors */
+        --light-blue: #31c3bd;
+        --light-blue-hover: #65e9e4;
+        --light-yellow: #f2b137;
+        --light-yellow-hover: #ffc860;
+        --dark-navy: #1a2a33;
+        --semi-dark-navy: #1f3641;
+        --silver: #a8bfc9;
+        --silver-hover: #dbe8ed;
+        --button-1-shadow: #CC8B13;
+        --button-2-shadow: #118C87;
+        --player-selector: #d9d9d9;
+        --playbox-shadow: #10212A;
+        --grey-shadow: #6B8997;
+
+        --default-font: 'Outfit', sans-serif;
+    }
+
     body {
-    font-family: Arial, sans-serif;
-    margin: 0;
-    padding: 0;
-}
-.container {
-    max-width: 800px;
-    margin: 20px auto;
-    padding: 20px;
-    border: 1px solid #ccc;
+        font-family: var(--default-font);
+        margin: 0;
+        padding: 0;
+        background-color: var(--semi-dark-navy);
+        color: var(--silver);
+    }
+
+    .container {
+        max-width: 800px;
+        margin: 20px auto;
+        padding: 20px;
+        border-radius: 10px;
+        background-color: var(--dark-navy);
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    }
+
+    h1 {
+        text-align: center;
+        color: var(--light-blue);
+    }
+
+    .input-container {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-bottom: 20px;
+    }
+
+    label {
+        font-size: 18px;
+        margin-right: 10px;
+    }
+
+    input[type="text"] {
+        height: 30px;
+        width: 200px;
+        font-size: 16px;
+        border-radius: 5px;
+        border: 1px solid var(--silver);
+        padding: 5px;
+        background-color: var(--dark-navy);
+        color: var(--silver);
+    }
+
+    button {
+    height: 40px;
+    width: 120px;
+    font-size: 16px;
     border-radius: 5px;
-    background-color: #f9f9f9;
+    border: none;
+    background-color: var(--light-blue);
+    color: #ffffff; /* or color: var(--silver); */
+    cursor: pointer;
 }
 
-#localPlayerName{
-    height: 30px;
-    width: 130px;
-   font-size: 19px;
-    border-radius: 4px;
-    border: 1px solid black;
-   text-align: center;
-
-}
-#buttonroom{
-    height: 30px;
-    width: 130px;
-    color: white;
-   font-size: 19px;
-    border-radius: 4px;
-    border: 1px solid black;
-   text-align: center;
-   background-color: rgb(43, 41, 41);
+button:hover {
+    background-color: var(--light-blue-hover);
 }
 
-#buttonroom:hover{
-    background-color: white;
-    color: black;
-}
-.container div label{
-    height: 30px;
-    width: 130px;
-    padding: 6px;
-    color: black;
-   font-size: 19px;
-    border-radius: 4px;
-    border: 1px solid black;
-   text-align: center;
-}
-h1 {
-    text-align: center;
-}
-#playerList {
-    list-style-type: none;
-    padding: 0;
-}
-.player {
-    padding: 10px;
-    margin-bottom: 5px;
-    background-color: #f0f0f0;
-    border-radius: 5px;
-}
-#notification {
-    position: fixed;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    background-color: #f8d7da;
-    padding: 20px;
-    border-radius: 5px;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-    z-index: 9999;
-    display: none; /* Initially hidden */
-    flex-direction: column;
+    .player-list {
+        list-style-type: none;
+        padding: 0;
+    }
+
+    .player-card {
+    display: flex;
+    justify-content: space-between;
     align-items: center;
+    padding: 10px;
+    margin-bottom: 10px;
+    background-color: var(--semi-dark-navy);
+    border-radius: 10px;
 }
 
-@keyframes popUp {
-    0% {
-        transform: translate(-50%, -70%);
-        opacity: 0;
+.player-name {
+    font-size: 16px;
+    color: var(--silver);
+    margin-right: 10px;
+}
+
+.send-request-button {
+    height: 30px;
+    min-width: 100px; /* Ensure minimum width */
+    font-size: 14px;
+    padding: 5px 10px; /* Adjust padding */
+    border-radius: 5px;
+    border: none;
+    background-color: #ff5252; /* Red background color */
+    color: #ffffff; /* White text color */
+    cursor: pointer;
+    box-shadow: 0 2px 4px rgba(139, 0, 0, 0.4); /* Add box shadow */
+    transition: box-shadow 0.3s; /* Add transition */
+}
+
+.send-request-button:hover {
+    background-color: #ff7f7f; /* Red background color */
+}
+    .player-actions {
+        display: flex;
+        justify-content: center;
+        margin-top: 10px;
     }
-    100% {
+
+    .action-button {
+        height: 30px;
+        width: 100px;
+        font-size: 14px;
+        border-radius: 5px;
+        border: none;
+        margin: 0 5px;
+        cursor: pointer;
+    }
+
+    .action-button.accept {
+        background-color: var(--light-yellow);
+    }
+
+    .action-button.reject {
+        background-color: var(--light-yellow-hover);
+    }
+
+    .notification {
+        position: fixed;
+        top: 50%;
+        left: 50%;
         transform: translate(-50%, -50%);
-        opacity: 1;
+        background-color: var(--semi-dark-navy);
+        padding: 20px;
+        border-radius: 10px;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        z-index: 9999;
+        display: none;
     }
-}
 
-.hidden {
-    display: none;
-}
+    .notification p {
+        font-size: 16px;
+        color: var(--silver);
+        margin-bottom: 10px;
+    }
 </style>
 </head>
 <body>
-    <div class="container">
-        <h1>Lobby Room</h1>
-        <div>
-            <div>
-                <label for="localPlayerName">Enter your name:</label>
-                <input type="text" id="localPlayerName" placeholder="Your Name">
-                <button id="buttonroom" onclick="joinRoom()">Join Room</button>
-            </div>
-        </div>
-        <p>Number of players: <span id="playerCount">0</span></p>
-        <p>Empty seats remaining: <span id="emptySeats">10</span></p>
-        <ul id="playerList"></ul>
+<div class="container">
+    <h1>Game Lobby</h1>
+    <div class="input-container">
+        <label for="localPlayerName">Enter your name:</label>
+        <input type="text" id="localPlayerName" placeholder="Your Name">
+        <button onclick="joinRoom()">Join Room</button>
     </div>
-    <div id="notification" class="hidden">
-        <p><span id="senderName"></span> wants to play with you!</p>
-        <div>
-            <button onclick="acceptRequest()">Accept</button>
-            <button onclick="rejectRequest()">Reject</button>
-        </div>
-    </div>    
-    <script src="https://cdn.socket.io/4.7.4/socket.io.min.js" integrity="sha384-Gr6Lu2Ajx28mzwyVR8CFkULdCU7kMlZ9UthllibdOSo6qAiN+yXNHqtgdTvFXMT4" crossorigin="anonymous"></script>
-    <script>
-        const socket = io("https://compiler-chetna-2345-production.up.railway.app/", { transports: ["websocket"] });
+    <p>Number of players: <span id="playerCount">0</span></p>
+    <p>Empty seats remaining: <span id="emptySeats">10</span></p>
+    <ul id="playerList" class="player-list"></ul>
+</div>
+<div id="notification" class="notification">
+    <p><span id="senderName"></span> wants to play with you!</p>
+    <div class="player-actions">
+        <button class="action-button accept" onclick="acceptRequest()">Accept</button>
+        <button class="action-button reject" onclick="rejectRequest()">Reject</button>
+    </div>
+</div>
+<script src="https://cdn.socket.io/4.7.4/socket.io.min.js" integrity="sha384-Gr6Lu2Ajx28mzwyVR8CFkULdCU7kMlZ9UthllibdOSo6qAiN+yXNHqtgdTvFXMT4" crossorigin="anonymous"></script>
+<script>
+    const socket = io("https://compiler-chetna-2345-production.up.railway.app/", { transports: ["websocket"] });
 
-      // Function to add a player to the list
-      function addPlayer(playerName) {
-            const playerList = document.getElementById('playerList');
+    function addPlayer(playerName) {
+    const playerList = document.getElementById('playerList');
+    if (playerList.querySelector(`li[data-player-name="${playerName}"]`)) {
+        return; // Player already exists, do nothing
+    }
+    const playerItem = document.createElement('li');
+    playerItem.classList.add('player-card');
+    playerItem.dataset.playerName = playerName;
+    playerItem.innerHTML = `
+        <p class="player-name">${playerName}</p>
+        <button class="send-request-button" onclick="sendRequest('${playerName}')">Send Request</button>
+    `;
+    playerList.appendChild(playerItem);
+}
 
-            if (playerList.querySelector(`li[data-player-name="${playerName}"]`)) {
-                    return; // Player already exists, do nothing
-               }
-            const playerItem = document.createElement('li');
-            playerItem.classList.add('player');
-            playerItem.dataset.playerName = playerName; 
-            playerItem.textContent = playerName;
+    function showNotification(senderName) {
+        document.getElementById('senderName').textContent = senderName;
+        document.getElementById('notification').style.display = 'block';
+    }
 
-    if (playerName !== localPlayerName) {
-            const sendRequestButton = document.createElement('button');
-            sendRequestButton.style.marginRight = "100px";
-            sendRequestButton.style.fontFamily = "arial";
-            sendRequestButton.style.padding = "14px";
-            sendRequestButton.style.borderRadius = '3px';
-            sendRequestButton.textContent = 'Send Request';
-            sendRequestButton.dataset.playerName = playerName; // bute
-     sendRequestButton.addEventListener('click', (event) => {
-        if(localPlayerName === ''){
+    function acceptRequest() {
+        console.log(`Accept request from ${document.getElementById('senderName').textContent}`);
+        window.location.href = 'game.html';
+        document.getElementById('notification').style.display = 'none';
+    }
+
+    function rejectRequest() {
+        console.log(`Reject request from ${document.getElementById('senderName').textContent}`);
+        document.getElementById('notification').style.display = 'none';
+    }
+
+    function removePlayer(playerName) {
+        const playerList = document.getElementById('playerList');
+        const playerItem = playerList.querySelector(`li[data-player-name="${playerName}"]`);
+        if (playerItem) {
+            playerList.removeChild(playerItem);
+        }
+    }
+
+    function updateCounts(count, empty) {
+        document.getElementById('playerCount').textContent = count;
+        document.getElementById('emptySeats').textContent = empty;
+    }
+
+    function joinRoom() {
+    let inputElement = document.getElementById('localPlayerName');
+    let localPlayerName = inputElement.value.trim();
+    if (localPlayerName === '') {
+        alert('Please enter a valid name');
+        return;
+    }
+    inputElement.value = ''; // Clear the input value
+    inputElement.setAttribute('readonly', true);
+    socket.emit('new player', localPlayerName);
+}
+
+    function sendRequest(targetPlayerName) {
+        const localPlayerName = document.getElementById('localPlayerName').value.trim();
+        if (localPlayerName === '') {
             alert('Please enter a valid name before sending request');
+            return;
         }
-            const targetPlayerName = event.target.dataset.playerName; 
-            socket.emit('sendRequest', { sender: localPlayerName, receiver: targetPlayerName });
-            console.log(`Sending request to ${targetPlayerName}`);
-        });
-        playerItem.appendChild(sendRequestButton);
-       }
-        playerList.appendChild(playerItem);
-   }
+        socket.emit('sendRequest', { sender: localPlayerName, receiver: targetPlayerName });
+        console.log(`Sending request to ${targetPlayerName}`);
+    }
 
-            let localPlayerName = "";
-
-            function showNotification(senderName) {
-
-                document.getElementById('senderName').textContent = senderName;
-                document.getElementById('notification').classList.remove('hidden');
-                document.getElementById('notification').style.display = 'flex';
-            }
-
-            // Function to accept request
-            function acceptRequest() {
-                console.log(`Accept request from ${document.getElementById('senderName').textContent}`);
-                window.location.href = 'game.html';
-                document.getElementById('notification').style.display = 'none'; // Redirect to game.html
-            }
-
-            function rejectRequest() {
-
-                console.log(`Reject request from ${document.getElementById('senderName').textContent}`);
-                document.getElementById('notification').style.display = 'none'; 
-            }
-
-        function removePlayer(playerName) {
-            const playerList = document.getElementById('playerList');
-            const players = playerList.getElementsByTagName('li');
-            for (let i = 0; i < players.length; i++) {
-                if (players[i].textContent === playerName) {
-                    playerList.removeChild(players[i]);
-                    break;
-                }
-            }
-        }
-
-        // Function to update player count and empty seats
-        function updateCounts(count, empty) {
-            document.getElementById('playerCount').textContent = count;
-            document.getElementById('emptySeats').textContent = empty;
-        }
-
-        // Join the room with the provided name
-        function joinRoom() {
-            localPlayerName = document.getElementById('localPlayerName').value.trim();
-          if (localPlayerName === '') {
-                  alert('Please enter a valid name');
-                  return;
-            }
-          document.getElementById('localPlayerName').setAttribute('readonly', true); 
-            socket.emit('new player', localPlayerName);
-        }
-            socket.on('receiveRequest', ({ sender }) => {
-
+    socket.on('receiveRequest', ({ sender }) => {
         const accept = confirm(`Incoming request from ${sender}. Do you want to accept?`);
         if (accept) {
-            acceptRequest(); // Handle accepting the request
+            acceptRequest();
         } else {
-            rejectRequest(); // Handle rejecting the request
+            rejectRequest();
         }
     });
 
-
-        // Socket.IO events
-        socket.on('current players', players => {
-            document.getElementById('playerList').innerHTML = '';
-            players.forEach(player => {
-                addPlayer(player);
-            });
-            updateCounts(players.length, 10 - players.length);
+    socket.on('current players', players => {
+        const playerList = document.getElementById('playerList');
+        playerList.innerHTML = '';
+        players.forEach(player => {
+            addPlayer(player);
         });
+        updateCounts(players.length, 10 - players.length);
+    });
 
-        socket.on('player joined', playerName => {
-            addPlayer(playerName);
-            const playerCount = document.getElementById('playerList').getElementsByTagName('li').length;
-            updateCounts(playerCount, 10 - playerCount);
-        });
+    socket.on('player joined', playerName => {
+        addPlayer(playerName);
+        const playerCount = document.querySelectorAll('.player-card').length;
+        updateCounts(playerCount, 10 - playerCount);
+    });
 
-        socket.on('player left', playerName => {
-            removePlayer(playerName);
-            const playerCount = document.getElementById('playerList').getElementsByTagName('li').length;
-            updateCounts(playerCount, 10 - playerCount);
-        });
+    socket.on('player left', playerName => {
+        removePlayer(playerName);
+        const playerCount = document.querySelectorAll('.player-card').length;
+        updateCounts(playerCount, 10 - playerCount);
+    });
 
-        // Initial request to get current player list
-        socket.emit('get players');
-    </script>
+    socket.emit('get players');
+</script>
 </body>
 </html>
-
