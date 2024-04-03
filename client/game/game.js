@@ -238,5 +238,5 @@ function save_score(score) {
 }
 
 function display_score() {
-  alert("Highscore : " + tic_tac_toe_highscore);
+  // alert("Highscore : " + tic_tac_toe_highscore);
 }
