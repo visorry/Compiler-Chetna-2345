@@ -1,4 +1,4 @@
-const socket = io('http://localhost:5000/');
+const socket = io('https://compiler-chetna-2345-production.up.railway.app/');
 
 // Client side (lobby.js)
 function createLobby() {
