@@ -11,19 +11,19 @@ html {
 }
 
 body {
-    background: #c1bdba;
+    background: #1f3641; /* Dark teal */
     font-family: 'Titillium Web', sans-serif;
 }
 
 /* Links */
 a {
     text-decoration: none;
-    color: #1ab188;
+    color: #65e9e4; /* Cyan */
     transition: 0.5s ease;
 }
 
 a:hover {
-    color: #0e6b55;
+    color: #bbebf3; /* Light Cyan */
 }
 
 /* Form */
@@ -64,12 +64,12 @@ a:hover {
 }
 
 .tab-group li a:hover {
-    background: #0e6b55;
-    color: #ffffff;
+    background: #65e9e4; /* Cyan */
+    color: #1f3641; /* Dark teal */
 }
 
 .tab-group .active a {
-    background: #1ab188;
+    background: #1ab188; /* Dark Cyan */
     color: #ffffff;
 }
 
@@ -125,7 +125,7 @@ textarea {
 input:focus,
 textarea:focus {
     outline: 0;
-    border-color: #1ab188;
+    border-color: #65e9e4; /* Cyan */
 }
 
 textarea {
@@ -166,14 +166,14 @@ textarea {
     font-weight: 600;
     text-transform: uppercase;
     letter-spacing: 0.1em;
-    background: #1ab188;
+    background: #1ab188; /* Dark Cyan */
     color: #ffffff;
     transition: all 0.5s ease;
 }
 
 .button:hover,
 .button:focus {
-    background: #0e6b55;
+    background: #0e6b55; /* Dark Cyan */
 }
 
 /* Button Block */
