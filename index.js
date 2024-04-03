@@ -27,6 +27,9 @@ mongoose.connect('mongodb+srv://vis:vishnu@cluster0.wcrafar.mongodb.net/tictacgo
 // Mount the auth routes
 app.use('/auth', authRoutes);
 
+let lobbyPlayers = [];
+let lobbies = []; // Store lobby names
+
 // Handle socket connections
 io.on("connection", (socket) => {
   console.log("New Player Id:", socket.id);
@@ -68,39 +71,62 @@ io.on("connection", (socket) => {
       opponent.emit("opponent.left");
     }
   });
+
+  // Create lobby
+  socket.on('createLobby', ({ lobbyName }) => {
+    if (!lobbyPlayers.some(player => player.id === socket.id)) { // Check if the player is already in the lobbyPlayers list
+        lobbyPlayers.push({ id: socket.id, lobbyName: lobbyName }); // Add lobby name to the player's data
+        updateLobby();
+    }
 });
 
-let Lobbyplayers = [];
+  // Join lobby
+  socket.on('joinLobby', ({ lobbyName }) => {
+    if (lobbies.includes(lobbyName)) {
+      socket.join(lobbyName);
+      io.to(socket.id).emit('joinLobbySuccess', lobbyName); // Notify client of successful join
+    }
+  });
+
+  // List lobbies
+  socket.on('listLobbies', () => {
+    const otherLobbies = lobbyPlayers.filter(player => player.id !== socket.id).map(player => player.lobbyName);
+    io.to(socket.id).emit('lobbyListUpdate', otherLobbies);
+});
+});
 
 io.on('connection', socket => {
     console.log('A user connected');
 
-    socket.emit('current players', Lobbyplayers.map(player => player.name)); // new 
+    // Send the current lobby players to the newly connected player
+    socket.emit('currentPlayers', lobbyPlayers.map(player => player.name));
 
-    socket.on('new player', playerName => {
-      Lobbyplayers.push({ name: playerName, id: socket.id });
-      console.log(Lobbyplayers);
-      io.emit('player joined', playerName); // new 
+    // Add the newly connected player to the lobbyPlayers array
+    socket.on('newPlayer', playerName => {
+      lobbyPlayers.push({ name: playerName, id: socket.id });
+      console.log(lobbyPlayers);
+      io.emit('playerJoined', playerName); // Inform all connected clients about the new player
   });
 
+    // Handle game requests
     socket.on('sendRequest', ({ sender, receiver }) => {
-      const receiverPlayer = Lobbyplayers.find(player => player.name === receiver);
+      const receiverPlayer = lobbyPlayers.find(player => player.name === receiver);
       if (receiverPlayer) {
           io.to(receiverPlayer.id).emit('receiveRequest', { sender });
       }
   });
 
+  // Handle disconnection of players
   socket.on('disconnect', () => {
     console.log('A user disconnected');
-    const index = Lobbyplayers.findIndex(player => player.id === socket.id);
+    const index = lobbyPlayers.findIndex(player => player.id === socket.id);
     if (index !== -1) {
-        const playerName = Lobbyplayers[index].name;
-        Lobbyplayers.splice(index, 1);
-        io.emit('player left', playerName);
+        const playerName = lobbyPlayers[index].name;
+        lobbyPlayers.splice(index, 1);
+        io.emit('playerLeft', playerName); // Inform all connected clients about the disconnected player
     }
-});  // new 
- });
-
+});
+});
 
 // Initialize player data
 const players = {};
@@ -121,6 +147,11 @@ function joinGame(socket) {
     // If no unmatched player, set the current player as unmatched
     unmatched = socket.id;
   }
+}
+
+function updateLobby() {
+  const otherLobbies = lobbyPlayers.map(player => player.lobbyName);
+  io.emit('lobbyListUpdate', otherLobbies);
 }
 
 function getOpponent(socket) {

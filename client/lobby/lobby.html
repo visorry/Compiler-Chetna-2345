@@ -12,7 +12,7 @@
     <div class="input-container">
         <label for="localPlayerName">Enter your name:</label>
         <input type="text" id="localPlayerName" placeholder="Your Name">
-        <button onclick="joinRoom()">Join Room</button>
+        <button id="joinRoomBtn">Join Room</button>
     </div>
     <p>Number of players: <span id="playerCount">0</span></p>
     <p>Empty seats remaining: <span id="emptySeats">10</span></p>
@@ -21,109 +21,13 @@
 <div id="notification" class="notification">
     <p><span id="senderName"></span> wants to play with you!</p>
     <div class="player-actions">
-        <button class="action-button accept" onclick="acceptRequest()">Accept</button>
-        <button class="action-button reject" onclick="rejectRequest()">Reject</button>
+        <button class="action-button accept" id="acceptBtn">Accept</button>
+        <button class="action-button reject" id="rejectBtn">Reject</button>
     </div>
 </div>
 <script src="https://cdn.socket.io/4.7.4/socket.io.min.js" integrity="sha384-Gr6Lu2Ajx28mzwyVR8CFkULdCU7kMlZ9UthllibdOSo6qAiN+yXNHqtgdTvFXMT4" crossorigin="anonymous"></script>
-<script>
-    const socket = io("https://compiler-chetna-2345-production.up.railway.app/", { transports: ["websocket"] });
-
-    function addPlayer(playerName) {
-    const playerList = document.getElementById('playerList');
-    if (playerList.querySelector(`li[data-player-name="${playerName}"]`)) {
-        return; // Player already exists, do nothing
-    }
-    const playerItem = document.createElement('li');
-    playerItem.classList.add('player-card');
-    playerItem.dataset.playerName = playerName;
-    playerItem.innerHTML = `
-        <p class="player-name">${playerName}</p>
-        <button class="send-request-button" onclick="sendRequest('${playerName}')">Send Request</button>
-    `;
-    playerList.appendChild(playerItem);
-}
-
-    function showNotification(senderName) {
-        document.getElementById('senderName').textContent = senderName;
-        document.getElementById('notification').style.display = 'block';
-    }
-
-    function acceptRequest() {
-        console.log(`Accept request from ${document.getElementById('senderName').textContent}`);
-        window.location.href = 'game.html';
-        document.getElementById('notification').style.display = 'none';
-    }
-
-    function rejectRequest() {
-        console.log(`Reject request from ${document.getElementById('senderName').textContent}`);
-        document.getElementById('notification').style.display = 'none';
-    }
-
-    function removePlayer(playerName) {
-        const playerList = document.getElementById('playerList');
-        const playerItem = playerList.querySelector(`li[data-player-name="${playerName}"]`);
-        if (playerItem) {
-            playerList.removeChild(playerItem);
-        }
-    }
-
-    function updateCounts(count, empty) {
-        document.getElementById('playerCount').textContent = count;
-        document.getElementById('emptySeats').textContent = empty;
-    }
-
-    function joinRoom() {
-        const localPlayerName = document.getElementById('localPlayerName').value.trim();
-        if (localPlayerName === '') {
-            alert('Please enter a valid name');
-            return;
-        }
-        document.getElementById('localPlayerName').setAttribute('readonly', true);
-        socket.emit('new player', localPlayerName);
-    }
-
-    function sendRequest(targetPlayerName) {
-        const localPlayerName = document.getElementById('localPlayerName').value.trim();
-        if (localPlayerName === '') {
-            alert('Please enter a valid name before sending request');
-            return;
-        }
-        socket.emit('sendRequest', { sender: localPlayerName, receiver: targetPlayerName });
-        console.log(`Sending request to ${targetPlayerName}`);
-    }
-
-    socket.on('receiveRequest', ({ sender }) => {
-        const accept = confirm(`Incoming request from ${sender}. Do you want to accept?`);
-        if (accept) {
-            acceptRequest();
-        } else {
-            rejectRequest();
-        }
-    });
-
-    socket.on('current players', players => {
-        const playerList = document.getElementById('playerList');
-        playerList.innerHTML = '';
-        players.forEach(player => {
-            addPlayer(player);
-        });
-        updateCounts(players.length, 10 - players.length);
-    });
-
-    socket.on('player joined', playerName => {
-        addPlayer(playerName);
-        const playerCount = document.querySelectorAll('.player-card').length;
-        updateCounts(playerCount, 10 - playerCount);
-    });
-
-    socket.on('player left', playerName => {
-        removePlayer(playerName);
-        const playerCount = document.querySelectorAll('.player-card').length;
-        updateCounts(playerCount, 10 - playerCount);
-    });
-
-    socket.emit('get players');
+<script src="lobby.js">
+    
 </script>
 </body>
 </html>
