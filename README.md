@@ -1,9 +1,10 @@
 # Project Title: Compiler-Chetna-2345
 
 ### Home Page
-<img src=""></img>
-### Profile Page
-<img src="" alt="profile page image"></img>
+![Screenshot 2024-04-04 115853](https://github.com/visorry/Compiler-Chetna-2345/assets/121347308/646c3df6-c39c-45ff-989e-b03629fed7d3)
+
+### Game Page
+![Screenshot 2024-04-04 120210](https://github.com/visorry/Compiler-Chetna-2345/assets/121347308/97a2b527-e4c8-4d43-a2cb-015204d2ceee)
 
 ## Introduction
 Code Collab: Versatile code editor enabling multi-language coding with real-time output visualization for seamless collaborative development.
@@ -12,14 +13,12 @@ Code Collab: Versatile code editor enabling multi-language coding with real-time
 Frontend | Backend | Fullstack
 
 ## Deployed App
-- Frontend: 
+- Frontend: https://compiler-chetna-2345.vercel.app/
 - Backend: 
-- IDEBackend: 
 
 ## Directory Structure
-cipher-sorceress-0123/
- - ├─ Backend/
- - ├─ Frontend/
+Compiler-Chetna-2345/
+ - ├─ client/
  - ├─ ...
 
 ## Video Walkthrough of the project
@@ -38,14 +37,7 @@ Features
 
 ```bash
 npm install 
-cd Backend
 npm run start
-```
-To run the IDE backend server 
-
-```bash
-npm install 
-npm run server
 ```
 
 
@@ -54,25 +46,13 @@ npm run server
 ```bash
 Run the frontend deployed app.
 Create your account to login.
-Create your codes and save them as you like.
 ```
 
 
 ## Credentials
 
-Email:- test@gmail.com
-Password:- Pass@1234
-
-## API Endpoints
-
-//
-//
-//
-//
-//
-//
-//
-
+Email:- a@a.com
+Password:- aaa
 
 
 ## Technology Stack
@@ -88,7 +68,7 @@ Password:- Pass@1234
 
 
 ## Team Members 
-### Abhaysinh Gaikwad(Team Lead )
+### Abhaysinh Gaikwad
 [![profile](https://img.shields.io/badge/Github-000?style=for-the-badge&logo=ko-fi&logoColor=white)](https://github.com/abhaysinh-gaikwad)
 
 [![linkedin](https://img.shields.io/badge/Linkedin-0A66C2?style=for-the-badge&logo=linkedin&logoColor=white)](https://www.linkedin.com/in/abhaysinh-anil-gaikwad/)
