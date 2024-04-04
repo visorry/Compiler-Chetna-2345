@@ -1,45 +1,46 @@
 # Project Title: Compiler-Chetna-2345
 
-### Home Page
-![Screenshot 2024-04-04 115853](https://github.com/visorry/Compiler-Chetna-2345/assets/121347308/646c3df6-c39c-45ff-989e-b03629fed7d3)
-
-### Game Page
-![Screenshot 2024-04-04 120210](https://github.com/visorry/Compiler-Chetna-2345/assets/121347308/97a2b527-e4c8-4d43-a2cb-015204d2ceee)
-
 ## Introduction
-Code Collab: Versatile code editor enabling multi-language coding with real-time output visualization for seamless collaborative development.
+
+This project is a full-stack web application titled "Compiler-Chetna-2345". It includes features such as user authentication, a home page, and a game page for playing Tic Tac Toe. Users can create accounts, log in, and play the Tic Tac Toe game with other users.
 
 ## Project Type
-Frontend | Backend | Fullstack
+
+Fullstack
 
 ## Deployed App
-- Frontend: https://compiler-chetna-2345.vercel.app/
-- Backend: 
+
+- Frontend: [Compiler-Chetna-2345](https://compiler-chetna-2345.vercel.app/)
+- Backend: [Backend Repository](#) (Link to backend repository)
 
 ## Directory Structure
+
 Compiler-Chetna-2345/
- - ├─ client/
- - ├─ ...
+├── client/
+├── ...
+
+css
+Copy code
 
 ## Video Walkthrough of the project
-Attach a very short video walkthrough of all of the features [ 1 - 3 minutes ]
+
+Attach a very short video walkthrough of all the features [1 - 3 minutes]
 
 ## Video Walkthrough of the codebase
-Attach a very short video walkthrough of the codebase [ 1 - 5 minutes ]
+
+Attach a very short video walkthrough of the codebase [1 - 5 minutes]
 
 ## Features
-Features
--  Secure Authentication and Login Functionality: Implemented a secure login mechanism using password hashing.
 
+- User authentication (login and signup)
+- Home page
+- Game page for playing Tic Tac Toe
 
 ## Installation & Getting started
-
 
 ```bash
 npm install 
 npm run start
-```
-
 
 ## Usage
 
