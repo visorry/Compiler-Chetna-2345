@@ -1,8 +1,15 @@
 # Project Title: Compiler-Chetna-2345
 
+### Home Page
+![Screenshot 2024-04-04 115853](https://github.com/visorry/Compiler-Chetna-2345/assets/121347308/646c3df6-c39c-45ff-989e-b03629fed7d3)
+
+### Game Page
+![Screenshot 2024-04-04 120210](https://github.com/visorry/Compiler-Chetna-2345/assets/121347308/97a2b527-e4c8-4d43-a2cb-015204d2ceee)
+
 ## Introduction
 
 This project is a full-stack web application titled "Compiler-Chetna-2345". It includes features such as user authentication, a home page, and a game page for playing Tic Tac Toe. Users can create accounts, log in, and play the Tic Tac Toe game with other users.
+
 
 ## Project Type
 
@@ -19,8 +26,7 @@ Compiler-Chetna-2345/
 ├── client/
 ├── ...
 
-css
-Copy code
+
 
 ## Video Walkthrough of the project
 
