@@ -1,4 +1,4 @@
-const socket = io('http://compiler-chetna-2345-production.up.railway.app/game');
+const socket = io('http://localhost:5000/game');
 
 let message = document.getElementById("message");
 let send_btn = document.getElementById("send");
