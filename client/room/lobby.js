@@ -1,5 +1,5 @@
 // Client side (lobby.js)
-const lobbySocket = io('https://compiler-chetna-2345-production.up.railway.app/lobby');
+const lobbySocket = io('http://compiler-chetna-2345-production.up.railway.app/lobby');
 
 function createLobby() {
     const lobbyName = prompt("Enter lobby name:");
