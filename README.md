@@ -30,11 +30,8 @@ Compiler-Chetna-2345/
 
 ## Video Walkthrough of the project
 
-Attach a very short video walkthrough of all the features [1 - 3 minutes]
+[Youtube demo](https://www.youtube.com/watch?v=rxnED_0V3IY) 
 
-## Video Walkthrough of the codebase
-
-Attach a very short video walkthrough of the codebase [1 - 5 minutes]
 
 ## Features
 
@@ -85,5 +82,8 @@ Password:- aaa
 [![profile](https://img.shields.io/badge/Github-000?style=for-the-badge&logo=ko-fi&logoColor=white)](https://github.com/RScodes1)
 
 [![linkedin](https://img.shields.io/badge/Linkedin-0A66C2?style=for-the-badge&logo=linkedin&logoColor=white)](https://www.linkedin.com/in/rajasekhar-korada-14b417177/)
+
+### Vishnu
+[![profile](https://img.shields.io/badge/Github-000?style=for-the-badge&logo=ko-fi&logoColor=white)]() 
 
 
