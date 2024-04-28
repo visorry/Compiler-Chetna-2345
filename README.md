@@ -65,6 +65,7 @@ Password:- aaa
 - JavaScript : Used for adding interactivity and dynamic behavior to web pages.
 - Node.js    : Server-side JavaScript runtime environment.
 - Express.js : Web application framework for Node.js.
+- Socket.Io  : Enables real-time, bidirectional communication between clients and servers, as well as communication between multiple clients simultaneously.
 - MongoDB    : NoSQL database used for data storage.
 - bcrypt     : Library for hashing passwords.
 - jwt        : Library for generating JSON Web Tokens.
